@@ -46,9 +46,9 @@ important_signals = mapping.keys()
 async def messages_listener(consumer: AIOKafkaConsumer):
     my_partition = TopicPartition(topic, 0)
     consumer.assign([my_partition])
-    # await consumer.seek_to_beginning(my_partition)
     await consumer.start()
-    consumer.seek(my_partition, 0)
+    # consumer.seek(my_partition, 0)
+    await consumer.seek_to_end(my_partition)
     async for message in consumer:
         parsed_data = json.loads(message.value.decode())
         current_dt = datetime.fromisoformat(parsed_data['moment'])
@@ -117,4 +117,3 @@ async def messages_listener(consumer: AIOKafkaConsumer):
         msg['aglomachines']['3'].append(exhausters_data[5])
         msg['aglomachines']['3'].append(exhausters_data[6])
         yield msg
-        await asyncio.sleep(1)
