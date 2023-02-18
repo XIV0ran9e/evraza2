@@ -1,13 +1,14 @@
 import asyncio
 import uuid
+import json
 #
-from datetime import datetime
-# from queue import Queue
-
+from .mongo import MongoManager
 import falcon
 from falcon.asgi import WebSocket
 from falcon.errors import WebSocketDisconnected
 from falcon.request import Request
+
+from backend.kafka_consumer import messages_listener, consumer
 
 
 class Hub:
@@ -27,10 +28,10 @@ class Hub:
         except KeyError:
             pass
 
-    async def send_to_all(self, message):
+    async def send_to_all(self, message: dict):
         connection: asyncio.Queue
         for connection in self._connections.values():
-            await connection.put(message)
+            await connection.put(json.dumps(message))
 
 
 class Connection:
@@ -59,19 +60,23 @@ class Connection:
 
 
 async def spam(hub: Hub):
-    while True:
-        await hub.send_to_all("aboba test")
-        await asyncio.sleep(1)
+    async for msg in messages_listener(consumer):
+        await hub.send_to_all(msg)
 
 
 class WebSocketHandler:
     _hub: Hub
+    mongo_client: MongoManager
+    task_started = False
 
     def __init__(self):
         self._hub = Hub()
-        falcon.create_task(spam(self._hub))
+        self.mongo_client = MongoManager()
+        self.mongo_client.connect()
 
     async def on_websocket(self, req: Request, ws: WebSocket):
+        if not self.task_started:
+            falcon.create_task(spam(self._hub))
         try:
             await ws.accept()
         except WebSocketDisconnected:
