@@ -1,6 +1,6 @@
 from typing import Optional
 from pymongo import MongoClient
-from backend import settings
+from app import settings
 
 
 class MongoManager:

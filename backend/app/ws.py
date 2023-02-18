@@ -2,14 +2,14 @@ import asyncio
 import uuid
 import json
 #
-from .mongo import MongoManager
+from app.mongo import MongoManager
 import falcon
 from falcon.asgi import WebSocket
 from falcon.errors import WebSocketDisconnected
 from falcon.request import Request
 from falcon.response import Response
 
-from backend.kafka_consumer import messages_listener, consumer
+from app.kafka_consumer import messages_listener, consumer
 
 
 class Hub:

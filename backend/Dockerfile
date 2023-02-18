@@ -1,4 +1,17 @@
 FROM python:3.8.8
-COPY start.sh /scripts/start.sh
-WORKDIR /backend
-ENTRYPOINT ["/scripts/start.sh"]
+
+# Set environment varibles
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /code/
+
+# Install dependencies
+RUN pip install pipenv
+COPY Pipfile Pipfile.lock /code/
+RUN pipenv install --system --dev
+
+COPY /. /code/
+ENV PYTHONPATH /code
+
+EXPOSE 1337

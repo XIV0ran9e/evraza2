@@ -1,6 +1,6 @@
 from falcon.asgi import App
 #
-from backend.ws import WebSocketHandler
+from app.ws import WebSocketHandler
 
 app = App()
 app.add_route("/ws", WebSocketHandler())
