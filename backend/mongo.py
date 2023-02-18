@@ -6,7 +6,7 @@ from backend import settings
 class MongoManager:
     __instance: Optional[MongoClient] = None
     DB = 'evraza2'
-    collection_by_day = 'records_{day}_{month}_{year}'
+    collection_by_day = 'records_{}_{}_{}'
 
     client: MongoClient = None
 
@@ -19,3 +19,6 @@ class MongoManager:
 
     def disconnect(self):
         self.client.close()
+
+    def write_new_msg(self, document):
+        pass
