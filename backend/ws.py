@@ -7,6 +7,7 @@ import falcon
 from falcon.asgi import WebSocket
 from falcon.errors import WebSocketDisconnected
 from falcon.request import Request
+from falcon.response import Response
 
 from backend.kafka_consumer import messages_listener, consumer
 
@@ -94,3 +95,29 @@ class WebSocketHandler:
             print(exc)
         finally:
             self._hub.delete_connection(connection.uuid)
+
+
+class Enums:
+    async def on_get(self, req: Request, resp: Response):
+        resp.media = {
+            'aglomachines': [
+                {
+                    'id': 1,
+                    'exchausters': ['Эксгаустер № 1 (У-171)', 'Эксгаустер № 2 (У-172)'],
+                    'rotor_ids': [22, 29],
+                    'rotor_installed': ['09.02.2023', '19.01.2023']
+                },
+                {
+                    'id': 2,
+                    'exchausters': ['Эксгаустер № 3 (Ф-171)', 'Эксгаустер № 4 (Ф-172)'],
+                    'rotor_id': [37, 27],
+                    'rotor_installed': ['02.02.2023', '13.02.2023']
+                },
+                {
+                    'id': 3,
+                    'exchausters': ["Эксгаустер № 5 (X-171)", "Эксгаустер № 6 (X-172)"],
+                    'rotor_id': [39, 45],
+                    'rotor_installed': ['25.01.2023', '06.02.2023']
+                }
+            ]
+        }
