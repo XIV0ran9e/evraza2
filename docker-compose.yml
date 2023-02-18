@@ -15,3 +15,5 @@ services:
       - '8000:80'
     volumes:
       - './frontend:/app'
+    links:
+      - "falcon:falcon"
