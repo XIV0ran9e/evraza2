@@ -36,7 +36,8 @@ async def messages_listener(consumer: AIOKafkaConsumer):
         current_dt = datetime.fromisoformat(parsed_data['moment'])
         msg = {
             'dt': parsed_data['moment'],
-            'warnings': []
+            'warnings': [],
+            'data': {}
         }
 
         for s in important_signals:
@@ -66,5 +67,20 @@ async def messages_listener(consumer: AIOKafkaConsumer):
                     msg['warnings'].append(
                         {'type': 'alarm min !', 'value': round(current_val, 6), 'name': mapping[s]['name'], "signal": s}
                     )
+                msg['data'][s] = {
+                    'name': mapping[s]['name'],
+                    'value': current_val,
+                    'has_warning': True,
+                    'alarm_min': parsed_data[signal_map['alarm_min']],
+                    'alarm_max': parsed_data[signal_map['alarm_max']],
+                    'warning_min': parsed_data[signal_map['warning_min']],
+                    'warning_max': parsed_data[signal_map['warning_max']]
+                }
+            else:
+                msg['data'][s] = {
+                    'name': mapping[s]['name'],
+                    'value': current_val,
+                    'has_warning': False
+                }
         yield msg
         await asyncio.sleep(1)

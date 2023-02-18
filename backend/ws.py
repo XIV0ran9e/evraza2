@@ -31,7 +31,7 @@ class Hub:
     async def send_to_all(self, message: dict):
         connection: asyncio.Queue
         for connection in self._connections.values():
-            await connection.put(json.dumps(message))
+            await connection.put(json.dumps(message, ensure_ascii=False))
 
 
 class Connection:

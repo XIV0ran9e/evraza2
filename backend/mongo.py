@@ -6,6 +6,7 @@ from backend import settings
 class MongoManager:
     __instance: Optional[MongoClient] = None
     DB = 'evraza2'
+    collection_by_day = 'records_{day}_{month}_{year}'
 
     client: MongoClient = None
 
