@@ -78,6 +78,7 @@ class WebSocketHandler:
     async def on_websocket(self, req: Request, ws: WebSocket):
         if not self.task_started:
             falcon.create_task(spam(self._hub))
+            self.task_started = True
         try:
             await ws.accept()
         except WebSocketDisconnected:
@@ -97,7 +98,7 @@ class WebSocketHandler:
             self._hub.delete_connection(connection.uuid)
 
 
-class Enums:
+class EnumsResource:
     async def on_get(self, req: Request, resp: Response):
         resp.media = {
             'aglomachines': [
