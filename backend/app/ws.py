@@ -98,7 +98,7 @@ class WebSocketHandler:
             self._hub.delete_connection(connection.uuid)
 
 
-class Enums:
+class EnumsResource:
     async def on_get(self, req: Request, resp: Response):
         resp.media = {
             'aglomachines': [
