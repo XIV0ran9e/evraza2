@@ -85,7 +85,7 @@ class WebSocketHandler:
             return
         res = self.mongo_client.get_last_one()
         parsed_msg = parse_message(res)
-        await ws.send_text(json.dumps(parsed_msg))
+        await ws.send_text(json.dumps(parsed_msg, ensure_ascii=False))
         connection = Connection()
         self._hub.add_connection(connection.uuid, connection.queue)
 
