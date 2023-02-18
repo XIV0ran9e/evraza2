@@ -1,4 +1,4 @@
-# Vue 3 + Vite | Lite
+# Vue 3 + Vite | Full
 
 ## Recommended IDE Setup
 
