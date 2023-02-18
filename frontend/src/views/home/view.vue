@@ -1,5 +1,11 @@
-<script setup></script>
+<script setup>
+import { PageMain } from "./pages";
+</script>
 
-<template></template>
+<template>
+  <div class="home">
+    <page-main></page-main>
+  </div>
+</template>
 
 <style scoped lang="scss"></style>
