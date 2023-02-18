@@ -6,4 +6,9 @@
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.layout {
+  min-height: 100vh;
+  background: var(--main-bg);
+}
+</style>

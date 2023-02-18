@@ -4,7 +4,7 @@ import { PageMain } from "./pages";
 
 <template>
   <div class="home">
-    <page-main></page-main>
+    <page-main />
   </div>
 </template>
 

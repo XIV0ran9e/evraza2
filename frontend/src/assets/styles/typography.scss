@@ -1,1 +1,278 @@
-@import './mixins.scss';
+@import './mixins/index.scss';
+
+@mixin tg-64-bold-poppins {
+  @include create-font(64px, bold, 1.88em, none, -2.29px, 'Poppins');
+
+  @include md {
+    @include create-font(44px, 700, 1.18em, none, 1px, 'Poppins');
+  }
+}
+
+@mixin tg-44-bold-poppins-ls {
+  @include create-font(44px, 700, 1.18em, none, -1px, 'Poppins');
+}
+
+@mixin tg-h1-bold {
+  @include create-font(56px, bold, 64px, none, -2px);
+}
+
+@mixin tg-h1-bold-poppins {
+  @include create-font(56px, bold, 72px, none, -2px, 'Poppins');
+}
+
+@mixin tg-52-bold-poppins {
+  @include create-font(52px, bold, 1.23em, none, -2px, 'Poppins');
+}
+
+@mixin tg-44-bold-poppins {
+  @include create-font(44px, 700, 1.18em, none, 1px, 'Poppins');
+}
+
+@mixin tg-h2-extra {
+  @include create-font(36px, 700, 64px, none, -1.2px, 'Poppins');
+}
+
+@mixin tg-h2-medium {
+  @include create-font(36px, medium, 64px, none, -1.2px, 'Poppins');
+}
+
+@mixin tg-h2-bold {
+  @include create-font(32px, bold, 2em, none, -1.2px, 'Poppins');
+}
+
+@mixin tg-h2-extra {
+  @include create-font(32px, 700, 40px, none, -1.2px, 'Poppins');
+}
+@mixin tg-30-medium-poppins {
+  @include create-font(30px, 500, 2em, none, -1.2px, 'Poppins');
+}
+
+@mixin tg-h4-medium {
+  @include create-font(24px, medium, 1.33em, none, -0.75px);
+}
+
+@mixin tg-h4-medium-poppins {
+  @include create-font(24px, medium, 1.33em, none, -0.75px, 'Poppins');
+}
+
+@mixin tg-24-bold-poppins {
+  @include create-font(24px, bold, 1.33em, none, -0.5px, 'Poppins');
+}
+
+@mixin tg-20-bold-poppins {
+  @include create-font(24px, bold, 1.6em, none, -0.5px, 'Poppins');
+}
+
+@mixin tg-h4-bold {
+  @include create-font(24px, bold, 1.33em, none, -0.5px);
+}
+
+@mixin tg-h4-bold-poppins {
+  @include create-font(24px, bold, 32px, none, -0.9px, 'Poppins');
+}
+
+@mixin tg-h4-semi {
+  @include create-font(24px, 600, 32px);
+}
+
+@mixin tg-h4-semi-poppins {
+  @include create-font(24px, 600, 32px, none, 0, 'Poppins');
+}
+
+@mixin tg-h5-bold {
+  @include create-font(20px, bold, 36px);
+}
+
+@mixin tg-h5-bold-line {
+  @include create-font(20px, bold, 26px);
+}
+
+@mixin tg-h5-bold-poppins {
+  @include create-font(20px, bold, 32px, none, -0.7px, 'Poppins');
+}
+
+@mixin tg-h5-extra {
+  @include create-font(20px, 800, 36px);
+}
+
+@mixin tg-h5-extra-poppins {
+  @include create-font(20px, 800, 36px, none, -0.5px, 'Poppins');
+}
+
+@mixin tg-h5-medium {
+  @include create-font(20px, 500, 28px);
+}
+
+@mixin tg-h5-reg {
+  @include create-font(20px, 400, 32px);
+}
+
+@mixin tg-h5-semi {
+  @include create-font(20px, 600, 28px);
+}
+
+@mixin tg-h5-semi-poppins {
+  @include create-font(20px, 600, 34px, none, normal, 'Poppins');
+}
+
+@mixin tg-18-normal {
+  // text content, legal pages as example
+  @include create-font(18px, normal, 1.67em);
+}
+@mixin tg-18-bold {
+  // text content, legal pages as example
+  @include create-font(18px, bold, 1.67em);
+}
+
+@mixin tg-h6-bold-poppins {
+  @include create-font(16px, bold, 18px, none, -0.5px, 'Poppins');
+}
+
+@mixin tg-16-semibold-poppins {
+  // text content, legal pages as example
+  @include create-font(16px, 600, 1.5em, none, -0.57px, 'Poppins');
+}
+
+@mixin tg-h6-extra {
+  @include create-font(16px, 800, 24px);
+}
+
+@mixin tg-h6-medium {
+  @include create-font(16px, 500, 24px);
+}
+
+@mixin tg-h6-bold {
+  @include create-font(16px, bold, 2em, none, -0.6px);
+}
+
+@mixin tg-h6-reg {
+  @include create-font(16px, 400, 2em);
+}
+
+@mixin tg-h6-bold-poppins {
+  @include create-font(16px, bold, 2em, none, -0.6px, 'Poppins');
+}
+
+@mixin tg-h6-extra-poppins {
+  @include create-font(16px, 800, 24px, none, -0.4px, 'Poppins');
+}
+
+@mixin tg-h6-semi {
+  @include create-font(16px, 600, 2em, none, -0.6px, 'Poppins');
+}
+
+@mixin tg-h7-semi-bold {
+  @include create-font(14px, 600);
+}
+
+@mixin tg-h7-bold {
+  @include create-font(14px, bold, 24px);
+}
+
+@mixin tg-h7-semi {
+  @include create-font(14px, bold, 24px, none, -0.5px, 'Poppins');
+}
+
+@mixin tg-h7-medium {
+  @include create-font(14px, medium, 24px);
+}
+
+@mixin tg-h7-bold-poppins {
+  @include create-font(14px, bold, 16px, none, -0.3px, 'Poppins');
+}
+
+@mixin tg-h8-medium {
+  @include create-font(12px, medium, 24px);
+}
+
+@mixin tg-36-bold-poppins {
+  @include create-font(36px, bold, 52px, none, 0px, 'Poppins');
+}
+
+@mixin tg-14-extrabold {
+  @include create-font(14px, 800, 1.43em);
+}
+
+@mixin tg-14-semi {
+  @include create-font(14px, 600, 20px, none, -0.5px);
+}
+
+@mixin tg-14-medium {
+  @include create-font(14px, 500, 20px, none, -0.5px);
+}
+
+@mixin tg-13-semibold-poppins {
+  @include create-font(13px, 600, 1.54em, uppercase, 0.81px, 'Poppins');
+}
+
+@mixin tg-13-semibold {
+  @include create-font(13px, 500, 1.54em, none, 0, 'Poppins');
+}
+
+@mixin tg-13-medium-poppins {
+  @include create-font(13px, 500, 1.54em, none, normal, 'Poppins');
+}
+
+@mixin tg-13-medium {
+  @include create-font(13px, 500, 1.85em);
+}
+
+@mixin tg-24-bold-poppins {
+  @include create-font(24px, bold, 32px, none, 0, 'Poppins');
+}
+
+@mixin tg-16-reg-inter {
+  @include create-font(16px, 400, 24px, none, -0.5px, 'Inter');
+}
+
+@mixin tg-16-reg {
+  @include create-font(16px, 400, 24px);
+}
+
+@mixin tg-16-medium {
+  @include create-font(16px, 500, 1.5em);
+}
+
+@mixin tg-16-bold {
+  @include create-font(16px, bold, 1.5em);
+}
+
+@mixin tg-20-bold {
+  @include create-font(20px, bold, 1.5em);
+}
+
+@mixin tg-12-medium-inter {
+  @include create-font(12px, 600, 2em, none, 0);
+}
+
+@mixin tg-12-bold {
+  @include create-font(12px, bold, 2.2em, none);
+}
+
+@mixin tg-12-extrabold {
+  @include create-font(12px, 800, 2.2em, none);
+}
+
+@mixin tg-12-reg {
+  @include create-font(12px, 400, 20px, none);
+}
+
+@mixin tg-12-medium {
+  @include create-font(12px, 500, 20px, none);
+}
+
+@mixin tg-h9-semi-poppins {
+  @include create-font(10px, 600, 12px, none, -0.2px, 'Poppins');
+}
+
+@mixin tg-h10-semi-poppins {
+  @include create-font(9px, 600, 12px, none, -0.2px, 'Poppins');
+}
+
+@mixin tg-h10-medium {
+  @include create-font(10px, 500, 12px);
+}
+
+@mixin tg-96-semi-poppins {
+  @include create-font(96px, 600, 160px, none, 0, 'Poppins');
+}
