@@ -1,5 +1,5 @@
 {
-  "name": "evraza-front",
+  "name": "evraza-frontend",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "vue": "latest",
-    "pinia": "latest"
+    "vue-router": "latest",
+    "pinia": "latest",
+    "vite-plugin-fonts": "^0.6.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "latest",

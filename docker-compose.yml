@@ -1,0 +1,17 @@
+version: '2'
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "1337:1337"
+    volumes:
+      - ./backend/.:/app
+    tty: true
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - '8000:80'
+    volumes:
+      - './frontend:/app'
