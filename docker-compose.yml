@@ -16,4 +16,4 @@ services:
     volumes:
       - './frontend:/app'
     links:
-      - "falcon:falcon"
+      - "backend:backend"
