@@ -9,7 +9,7 @@ from falcon.errors import WebSocketDisconnected
 from falcon.request import Request
 from falcon.response import Response
 
-from app.kafka_consumer import messages_listener, consumer
+from app.kafka_consumer import messages_listener, consumer, parse_message
 
 
 class Hub:
@@ -83,6 +83,9 @@ class WebSocketHandler:
             await ws.accept()
         except WebSocketDisconnected:
             return
+        res = self.mongo_client.get_last_one()
+        parsed_msg = parse_message(res)
+        await ws.send_text(json.dumps(parsed_msg))
         connection = Connection()
         self._hub.add_connection(connection.uuid, connection.queue)
 

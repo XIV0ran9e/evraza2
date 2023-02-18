@@ -43,6 +43,75 @@ with open('mapping.json', encoding='utf-8') as f:
 important_signals = mapping.keys()
 
 
+def parse_message(parsed_data: dict):
+    current_dt = datetime.fromisoformat(parsed_data['moment'])
+    msg = {
+        'dt': parsed_data['moment'],
+        'warnings': [],
+        'aglomachines': {
+            "1": [],
+            "2": [],
+            "3": []
+        }
+    }
+    exhausters_data = {}
+    for i in range(1, 7):
+        exhausters_data[i] = {}
+
+    for s in important_signals:
+        current_val = parsed_data.get(s)
+        signal_map = mapping.get(s)
+        exhauster_id = exhausters[signal_map['number']]
+        if signal_map['has_warnings']:
+            if current_val is None:
+                msg['warnings'].append(
+                    {'type': 'missing', "signal": s}
+                )
+                continue
+            if current_val > parsed_data[signal_map['warning_max']]:
+                msg['warnings'].append(
+                    {'type': 'warning max !', 'value': round(current_val, 6), 'name': mapping[s]['name'],
+                     "signal": s}
+                )
+            elif current_val > parsed_data[signal_map['alarm_max']]:
+                msg['warnings'].append(
+                    {'type': 'alarm max !', 'value': round(current_val, 6), 'name': mapping[s]['name'], "signal": s}
+                )
+            if current_val < parsed_data[signal_map['warning_min']]:
+                msg['warnings'].append(
+                    {'type': 'warning min !', 'value': round(current_val, 6), 'name': mapping[s]['name'],
+                     "signal": s}
+                )
+            elif current_val < parsed_data[signal_map['alarm_min']]:
+                msg['warnings'].append(
+                    {'type': 'alarm min !', 'value': round(current_val, 6), 'name': mapping[s]['name'], "signal": s}
+                )
+            exhausters_data[exhauster_id][s] = {
+                'name': mapping[s]['name'],
+                'value': current_val,
+                'has_warning': True,
+                'alarm_min': parsed_data[signal_map['alarm_min']],
+                'alarm_max': parsed_data[signal_map['alarm_max']],
+                'warning_min': parsed_data[signal_map['warning_min']],
+                'warning_max': parsed_data[signal_map['warning_max']],
+                'number': mapping[s]['number']
+            }
+        else:
+            exhausters_data[exhauster_id][s] = {
+                'name': mapping[s]['name'],
+                'value': current_val,
+                'has_warning': False,
+                'number': mapping[s]['number']
+            }
+    msg['aglomachines']['1'].append(exhausters_data[1])
+    msg['aglomachines']['1'].append(exhausters_data[2])
+    msg['aglomachines']['2'].append(exhausters_data[3])
+    msg['aglomachines']['2'].append(exhausters_data[4])
+    msg['aglomachines']['3'].append(exhausters_data[5])
+    msg['aglomachines']['3'].append(exhausters_data[6])
+    return msg
+
+
 async def messages_listener(consumer: AIOKafkaConsumer):
     my_partition = TopicPartition(topic, 0)
     consumer.assign([my_partition])
@@ -50,70 +119,4 @@ async def messages_listener(consumer: AIOKafkaConsumer):
     # consumer.seek(my_partition, 0)
     await consumer.seek_to_end(my_partition)
     async for message in consumer:
-        parsed_data = json.loads(message.value.decode())
-        current_dt = datetime.fromisoformat(parsed_data['moment'])
-        msg = {
-            'dt': parsed_data['moment'],
-            'warnings': [],
-            'aglomachines': {
-                "1": [],
-                "2": [],
-                "3": []
-            }
-        }
-        exhausters_data = {}
-        for i in range(1, 7):
-            exhausters_data[i] = {}
-
-        for s in important_signals:
-            current_val = parsed_data.get(s)
-            signal_map = mapping.get(s)
-            exhauster_id = exhausters[signal_map['number']]
-            if signal_map['has_warnings']:
-                if current_val is None:
-                    msg['warnings'].append(
-                        {'type': 'missing', "signal": s}
-                    )
-                    continue
-                if current_val > parsed_data[signal_map['warning_max']]:
-                    msg['warnings'].append(
-                        {'type': 'warning max !', 'value': round(current_val, 6), 'name': mapping[s]['name'],
-                         "signal": s}
-                    )
-                elif current_val > parsed_data[signal_map['alarm_max']]:
-                    msg['warnings'].append(
-                        {'type': 'alarm max !', 'value': round(current_val, 6), 'name': mapping[s]['name'], "signal": s}
-                    )
-                if current_val < parsed_data[signal_map['warning_min']]:
-                    msg['warnings'].append(
-                        {'type': 'warning min !', 'value': round(current_val, 6), 'name': mapping[s]['name'],
-                         "signal": s}
-                    )
-                elif current_val < parsed_data[signal_map['alarm_min']]:
-                    msg['warnings'].append(
-                        {'type': 'alarm min !', 'value': round(current_val, 6), 'name': mapping[s]['name'], "signal": s}
-                    )
-                exhausters_data[exhauster_id][s] = {
-                    'name': mapping[s]['name'],
-                    'value': current_val,
-                    'has_warning': True,
-                    'alarm_min': parsed_data[signal_map['alarm_min']],
-                    'alarm_max': parsed_data[signal_map['alarm_max']],
-                    'warning_min': parsed_data[signal_map['warning_min']],
-                    'warning_max': parsed_data[signal_map['warning_max']],
-                    'number': mapping[s]['number']
-                }
-            else:
-                exhausters_data[exhauster_id][s] = {
-                    'name': mapping[s]['name'],
-                    'value': current_val,
-                    'has_warning': False,
-                    'number': mapping[s]['number']
-                }
-        msg['aglomachines']['1'].append(exhausters_data[1])
-        msg['aglomachines']['1'].append(exhausters_data[2])
-        msg['aglomachines']['2'].append(exhausters_data[3])
-        msg['aglomachines']['2'].append(exhausters_data[4])
-        msg['aglomachines']['3'].append(exhausters_data[5])
-        msg['aglomachines']['3'].append(exhausters_data[6])
-        yield msg
+        yield parse_message(json.loads(message.value.decode()))
