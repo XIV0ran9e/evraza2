@@ -1,6 +1,7 @@
 from typing import Optional
+from datetime import datetime
 from pymongo import MongoClient
-from app import settings
+from . import settings
 
 
 class MongoManager:
@@ -20,5 +21,6 @@ class MongoManager:
     def disconnect(self):
         self.client.close()
 
-    def write_new_msg(self, document):
-        pass
+    def write_new_msg(self, document, dt: datetime):
+        col = self.client[self.DB][self.collection_by_day.format(dt.day, dt.month, dt.year)]
+        col.insert_one(document)
