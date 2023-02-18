@@ -2,12 +2,14 @@ version: '2'
 services:
   backend:
     build: ./backend
-    command: bash -c "uvicorn app.asgi:app --host 0.0.0.0 --port 1337"
+    command: bash -c "uvicorn app.asgi:app --host 0.0.0.0 --port 1337 --log-level debug"
     ports:
       - "1337:1337"
     volumes:
       - ./backend/.:/code
     tty: true
+    links:
+      - "mongodb:mongodb"
 
   frontend:
     build:
@@ -28,7 +30,6 @@ services:
       - 27020:27017
     volumes:
       - ./mongo:/data/db
-      - ./dump:/opt/dump
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=admin
