@@ -116,7 +116,7 @@ def parse_message(parsed_data: dict):
                 msg['warnings'].append(
                     {'type': 'alarm min !', 'value': round(current_val, 6), 'name': mapping[s]['name'], "signal": s}
                 )
-            exhausters_data[exhauster_id][s] = {
+            exhausters_data[exhauster_id][signal_map['current_part'] + ':' + signal_map['parameter_enum']] = {
                 'name': mapping[s]['name'],
                 'value': current_val,
                 'has_warning': True,
@@ -127,7 +127,7 @@ def parse_message(parsed_data: dict):
                 'number': mapping[s]['number'],
             }
         else:
-            exhausters_data[exhauster_id][s] = {
+            exhausters_data[exhauster_id][signal_map['current_part'] + ':' + signal_map['parameter_enum']] = {
                 'name': mapping[s]['name'],
                 'value': current_val,
                 'has_warning': False,
