@@ -137,3 +137,14 @@ class GetStatistics:
         date_upto = payload.get('date_upto')
         date_from = datetime.fromisoformat(date_from)
         date_upto = datetime.fromisoformat(date_upto)
+
+
+class GetLast:
+    mongo_client: MongoManager
+
+    def __init__(self):
+        self.mongo_client: MongoManager = MongoManager()
+        self.mongo_client.connect()
+
+    async def on_get(self, req: Request, resp: Response):
+        resp.media = self.mongo_client.get_last_one()

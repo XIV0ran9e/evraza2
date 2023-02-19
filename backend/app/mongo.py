@@ -85,10 +85,12 @@ class MongoManager:
     def get_graphics(self, fields, date_from: datetime, date_to: datetime):
         datasets = []
         labels = []
-        # date_from.day
+        final_projection = {}
+        for field in fields:
+            final_projection['_' + field] = {'$avg': field}
         while date_from < date_to:
             col = self.client[self.DB][self.collection_by_day.format(date_from.day, date_from.month, date_from.year)]
-            col.aggregate(
+            res = col.aggregate(
                 [
                     {
                         '$addFields': {
@@ -111,6 +113,9 @@ class MongoManager:
                         },
                         'h': {
                             '$hour': '$moment_dt'
+                        },
+                        'minute': {
+                            '$minute': '$moment_dt'
                         }
                     }
                 }, {
@@ -123,16 +128,13 @@ class MongoManager:
                             'year': '$y',
                             'month': '$m',
                             'day': '$d',
-                            'hour': '$h'
+                            'hour': '$h',
+                            'minute': '$minute'
                         },
-                        'total': {
-                            '$avg': '$SM_Exgauster\\[0:4]'
-                        },
-                        'total2': {
-                            '$avg': '$SM_Exgauster\\[1:4]'
-                        }
+
                     }
                 }
                 ]
             )
+            a = 1
             date_from += timedelta(minutes=1)
