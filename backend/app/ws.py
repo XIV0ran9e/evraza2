@@ -1,6 +1,7 @@
 import asyncio
 import uuid
 import json
+from datetime import datetime
 #
 from app.mongo import MongoManager
 import falcon
@@ -126,3 +127,13 @@ class EnumsResource:
                 }
             ]
         }
+
+
+class GetStatistics:
+    async def on_post(self, req: Request, resp: Response):
+        payload = await req.media
+        fields_ids = payload.get('fields')
+        date_from = payload.get('date_from')
+        date_upto = payload.get('date_upto')
+        date_from = datetime.fromisoformat(date_from)
+        date_upto = datetime.fromisoformat(date_upto)
