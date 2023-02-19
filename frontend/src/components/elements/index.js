@@ -2,4 +2,12 @@
 
 export { default as ElementAgloworkerItem } from './element.agloworker-item.vue'
 export { default as ElementAgloworkers } from './element.agloworkers.vue'
+export { default as ElementEksworkerItem } from './element.eksworker-item.vue'
+export { default as ElementEksworkerSubtitle } from './element.eksworker-subtitle.vue'
+export { default as ElementLastChange } from './element.last-change.vue'
 export { default as ElementLegend } from './element.legend.vue'
+export { default as ElementNotificationsItem } from './element.notifications-item.vue'
+export { default as ElementSchemeInfo } from './element.scheme-info.vue'
+export { default as ElementSchemeModal } from './element.scheme-modal.vue'
+export { default as ElementSchemeProgress } from './element.scheme-progress.vue'
+export { default as ElementSchemeTemperature } from './element.scheme-temperature.vue'

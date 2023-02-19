@@ -1,15 +1,6 @@
 <script setup>
 import { onMounted } from "vue";
 import { IconLogo } from "~/components/icons";
-
-onMounted(() => {
-  const url = "ws://backend:1337/ws";
-  const socket = new WebSocket(url);
-
-  socket.onmessage = (event) => {
-    console.log(event.data);
-  };
-});
 </script>
 
 <template>

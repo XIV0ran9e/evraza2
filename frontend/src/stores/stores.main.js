@@ -1,5 +1,11 @@
 import { defineStore } from 'pinia'
 
 export const useStore = defineStore('main', {
-  theme: 'dark'
+  state: () => {
+    return {
+      theme: 'dark',
+      data: null,
+      enum: null
+    }
+  }
 })

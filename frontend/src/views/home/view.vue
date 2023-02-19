@@ -1,10 +1,14 @@
 <script setup>
-import { PageMain } from "./pages";
+import { PageMain, PageScheme } from "./pages";
+import { SectionScheme } from "./sections";
 </script>
 
 <template>
   <div class="home">
     <page-main />
+    <!-- <page-scheme>
+      <section-scheme />
+    </page-scheme> -->
   </div>
 </template>
 
