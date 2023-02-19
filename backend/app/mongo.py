@@ -25,7 +25,10 @@ class MongoManager:
     def get_last_offset(self):
         col = self.client[self.DB][self.metadatacol]
         d = col.find_one({})
-        return d['offset']
+        if d:
+            return d['offset']
+        else:
+            return 0
 
     def write_last_offset(self, offset):
         col = self.client[self.DB][self.metadatacol]
