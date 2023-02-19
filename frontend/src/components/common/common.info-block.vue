@@ -4,6 +4,7 @@ import { IconTemperature, IconVibration } from "~/components/icons";
 defineProps({
   title: String,
   status: Object,
+  type: String
 });
 </script>
 
@@ -11,7 +12,7 @@ defineProps({
   <div class="block">
     <p class="block__title">{{ title }}</p>
     <div class="block__info">
-      <div class="block__info-item">
+      <div class="block__info-item" :class="{warning: `temp_${type}`}">
         <icon-wrapper class="block__info-icon">
           <icon-temperature />
         </icon-wrapper>
@@ -47,6 +48,10 @@ defineProps({
       border: 2px solid #cccccc;
       &:not(:last-child) {
         margin-right: 2px;
+      }
+      &.warning {
+        border: 1px solid #F69112;
+        background: #FEF1DB;
       }
     }
   }

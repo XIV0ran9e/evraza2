@@ -10,12 +10,20 @@ defineProps({
 const store = useStore();
 
 const computedWorkers = computed(() => store.data);
+
+const emit = defineEmits('set')
+
+const set = (item) => {
+  emit('set', item)
+}
+
 </script>
 <template>
   <div class="worker">
     <div class="container">
       <div class="worker__list" v-if="computedWorkers">
         <element-agloworker-item
+        @set="set"
           class="worker__item"
           v-for="(worker, idx) in computedWorkers.aglomachines"
           :idx="idx"

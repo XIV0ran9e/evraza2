@@ -1,15 +1,24 @@
 <script setup>
 import { PageMain, PageScheme, PageGraph } from "./pages";
-import { SectionScheme } from "./sections";
+import { SectionScheme, SectionGraph } from "./sections";
+import { ref } from "vue";
+
+const currentEks = ref(null)
+
+const setCurrent = (item) => {
+  currentEks.value = item
+}
 </script>
 
 <template>
   <div class="home">
-    <page-main />
-    <!-- <page-scheme>
+    <page-main v-if="!currentEks" @set="setCurrent" />
+    <page-scheme v-else>
       <section-scheme />
-    </page-scheme> -->
-    <!-- <page-graph /> -->
+    </page-scheme>
+    <!-- <page-graph>
+      <section-graph />
+    </page-graph> -->
   </div>
 </template>
 

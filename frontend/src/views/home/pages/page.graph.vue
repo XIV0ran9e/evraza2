@@ -5,7 +5,7 @@ import { AppHeader, AppFilter } from "~/components/app";
 <template>
   <div class="main">
     <app-header class="header" />
-    <app-AppFilter class="filter" />
+    <app-filter class="filter" />
     <div class="content">
       <slot></slot>
     </div>
@@ -17,9 +17,10 @@ import { AppHeader, AppFilter } from "~/components/app";
   min-height: 100vh;
   display: grid;
   grid-template-columns: 1fr 4fr;
+  grid-template-rows: auto 1fr auto;
   grid-template-areas:
     "header header"
-    "sidebar content";
+    "sidebar contentt";
 }
 
 .header {
@@ -28,10 +29,9 @@ import { AppHeader, AppFilter } from "~/components/app";
 
 .filter {
   grid-area: sidebar;
-  align-self: center;
 }
 
 .content {
-  grid-area: content;
+  grid-area: contentt;
 }
 </style>

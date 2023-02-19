@@ -1,16 +1,24 @@
 <script setup>
+import { computed } from "vue";
 import { IconInfoCritical } from "~/components/icons";
 
-defineProps({
+const props = defineProps({
   date: String,
 });
+
+const computedDate = computed(() => {
+  if (props.date > 0) {
+    return Math.floor(props.date)
+  }
+  return 0
+})
 </script>
 
 <template>
   <div class="lastchange">
     <p class="lastchange__title">Последняя замена ротера</p>
     <div class="lastchange__block">
-      <div class="lastchange__date">15 суток</div>
+      <div class="lastchange__date">{{ computedDate }} суток</div>
       <div class="lastchange__info">
         <p class="lastchange__subtitle">
           Прогноз
@@ -18,7 +26,7 @@ defineProps({
             <icon-info-critical />
           </icon-wrapper>
         </p>
-        <p class="lastchange__value">15 суток</p>
+        <p class="lastchange__value">{{ computedDate }} суток</p>
       </div>
     </div>
   </div>

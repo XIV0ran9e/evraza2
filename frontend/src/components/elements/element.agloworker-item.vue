@@ -34,6 +34,12 @@ const eksFormatted = computed(() => {
   ];
 });
 
+const emit = defineEmits('set')
+
+const set = (item) => {
+  emit('set', item)
+}
+
 watch(props.worker, () => {
   // console.log(
   //   "change",
@@ -48,9 +54,10 @@ watch(props.worker, () => {
 
 <template>
   <div class="worker">
-    <header class="worker__header">Агломашина № 1</header>
+    <header class="worker__header">Агломашина № {{ idx }}</header>
     <div class="worker__content" v-if="eksFormatted">
       <element-eksworker-item
+        @set="set"
         v-for="(item, idx) of worker"
         :key="idx"
         :eks-data="eksFormatted[idx]"

@@ -9,10 +9,16 @@
     "update": "npx npm-check-updates -u"
   },
   "dependencies": {
-    "vue": "latest",
-    "vue-router": "latest",
+    "@coreui/vue": "^4.6.1",
+    "@vuepic/vue-datepicker": "^4.0.1",
+    "d3": "^7.8.2",
+    "daterange-picker-vue3": "^1.0.2",
     "pinia": "latest",
-    "vite-plugin-fonts": "^0.6.0"
+    "vite-plugin-fonts": "^0.6.0",
+    "vue": "latest",
+    "vue-d3-charts": "^0.2.8",
+    "vue-router": "latest",
+    "vue3-date-time-picker": "^2.8.3"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "latest",
