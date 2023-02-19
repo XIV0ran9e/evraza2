@@ -1,9 +1,10 @@
 import traceback
+from falcon import CORSMiddleware
 from falcon.asgi import App
 #
 from app.ws import WebSocketHandler, EnumsResource, GetLast
 
-app = App()
+app = App(middleware=CORSMiddleware(allow_origins='*', allow_credentials='*'))
 app.add_route("/ws", WebSocketHandler())
 app.add_route("/enums", EnumsResource())
 app.add_route("/getlast", GetLast())

@@ -147,4 +147,4 @@ class GetLast:
         self.mongo_client.connect()
 
     async def on_get(self, req: Request, resp: Response):
-        resp.media = self.mongo_client.get_last_one()
+        resp.media = parse_message(self.mongo_client.get_last_one())

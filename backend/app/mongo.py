@@ -76,8 +76,6 @@ class MongoManager:
         )
         try:
             r = aggregation.next()
-            r.pop('_id')
-            r['moment_dt'] = r['moment_dt'].isoformat()
             return r
         except StopIteration:
             return {}
