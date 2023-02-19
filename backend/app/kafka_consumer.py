@@ -1,5 +1,6 @@
 import json
 import asyncio
+from collections import defaultdict
 from datetime import datetime
 from aiokafka import AIOKafkaConsumer, TopicPartition
 from aiokafka.helpers import create_ssl_context
@@ -12,6 +13,16 @@ password = 'eUIpgWu0PWTJaTrjhjQD3.hoyhntiK'
 
 SASL_MECHANISM = "SCRAM-SHA-512"
 SASL_SSL = "SASL_SSL"
+
+
+class MagicNumbers:
+    VIBRATION_HORIZONTAL_SEVEN = 1.71990613e-05
+    VIBRATION_VERTICAL_SEVEN = 2.60824919e-05
+    VIBRATION_AXIAL_SEVEN = 9.08204869e-06
+    VIBRATION_AXIAL_EIGHT = 4.2977256e-05
+
+
+DAY_IN_DOTS = 60 * 24
 
 exhausters = {
     "Эксгаустер № 1 (У-171)": 1,
@@ -58,16 +69,35 @@ def parse_message(parsed_data: dict):
     for i in range(1, 7):
         exhausters_data[i] = {}
 
+    forecasts = defaultdict(list)
     for s in important_signals:
         current_val = parsed_data.get(s)
         signal_map = mapping.get(s)
         exhauster_id = exhausters[signal_map['number']]
+
+        def breakdown_forecast():
+            def check_signal(part, enum, magic_number):
+                if parsed_data[signal_map['current_part']] == part and parsed_data[signal_map['enum']] == enum:
+                    border = parsed_data[signal_map['warning_max']]  # todo а правда, что эту?
+                    return (border - current_val) / magic_number
+
+            forecast = [
+                check_signal('Подшипник 7', 'vibration_horizontal', MagicNumbers.VIBRATION_HORIZONTAL_SEVEN),
+                check_signal('Подшипник 7', 'vibration_vertical', MagicNumbers.VIBRATION_VERTICAL_SEVEN),
+                check_signal('Подшипник 7', 'vibration_axial', MagicNumbers.VIBRATION_AXIAL_SEVEN),
+                check_signal('Подшипник 8', 'vibration_axial', MagicNumbers.VIBRATION_AXIAL_EIGHT),
+            ]
+            forecasts[exhauster_id].extend(filter(lambda x: x is not None, forecast))
+
         if signal_map['has_warnings']:
             if current_val is None:
                 msg['warnings'].append(
                     {'type': 'missing', "signal": s}
                 )
                 continue
+
+            breakdown_forecast()
+
             if current_val > parsed_data[signal_map['warning_max']]:
                 msg['warnings'].append(
                     {'type': 'warning max !', 'value': round(current_val, 6), 'name': mapping[s]['name'],
@@ -94,7 +124,7 @@ def parse_message(parsed_data: dict):
                 'alarm_max': parsed_data[signal_map['alarm_max']],
                 'warning_min': parsed_data[signal_map['warning_min']],
                 'warning_max': parsed_data[signal_map['warning_max']],
-                'number': mapping[s]['number']
+                'number': mapping[s]['number'],
             }
         else:
             exhausters_data[exhauster_id][s] = {
@@ -103,6 +133,8 @@ def parse_message(parsed_data: dict):
                 'has_warning': False,
                 'number': mapping[s]['number']
             }
+    for i in range(1, 7):
+        exhausters_data[i]['breakdown_forecast'] = min(forecasts[i])
     msg['aglomachines']['1'].append(exhausters_data[1])
     msg['aglomachines']['1'].append(exhausters_data[2])
     msg['aglomachines']['2'].append(exhausters_data[3])
@@ -118,5 +150,6 @@ async def messages_listener(consumer: AIOKafkaConsumer):
     await consumer.start()
     # consumer.seek(my_partition, 0)
     await consumer.seek_to_end(my_partition)
+    print()
     async for message in consumer:
         yield parse_message(json.loads(message.value.decode()))
