@@ -1,5 +1,5 @@
 <script setup>
-import { PageMain, PageScheme } from "./pages";
+import { PageMain, PageScheme, PageGraph } from "./pages";
 import { SectionScheme } from "./sections";
 </script>
 
@@ -9,6 +9,7 @@ import { SectionScheme } from "./sections";
     <!-- <page-scheme>
       <section-scheme />
     </page-scheme> -->
+    <!-- <page-graph /> -->
   </div>
 </template>
 
