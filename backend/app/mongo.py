@@ -50,12 +50,12 @@ class MongoManager:
 
     def get_last_one(self):
         db = self.client[self.DB]
-        start_dt = datetime(day=25, month=1, year=2023)
-        temp_dt = start_dt + timedelta(days=1)
-        while db[self.collection_by_day.format(temp_dt.day, temp_dt.month, temp_dt.year)].count_documents({}) > 0:
-            start_dt = temp_dt
-            temp_dt += timedelta(days=1)
-        col = db[self.collection_by_day.format(start_dt.day, start_dt.month, start_dt.year)]
+        # start_dt = datetime(day=25, month=1, year=2023)
+        # temp_dt = start_dt + timedelta(days=1)
+        # while db[self.collection_by_day.format(temp_dt.day, temp_dt.month, temp_dt.year)].count_documents({}) > 0:
+        #     start_dt = temp_dt
+        #     temp_dt += timedelta(days=1)
+        col = db["records_19_2_2023"]
         aggregation = col.aggregate(
             [
                 {
@@ -81,3 +81,58 @@ class MongoManager:
             return r
         except StopIteration:
             return {}
+
+    def get_graphics(self, fields, date_from: datetime, date_to: datetime):
+        datasets = []
+        labels = []
+        # date_from.day
+        while date_from < date_to:
+            col = self.client[self.DB][self.collection_by_day.format(date_from.day, date_from.month, date_from.year)]
+            col.aggregate(
+                [
+                    {
+                        '$addFields': {
+                            'moment_dt': {
+                                '$dateFromString': {
+                                    'dateString': '$moment'
+                                }
+                            }
+                        }
+                    }, {
+                    '$addFields': {
+                        'y': {
+                            '$year': '$moment_dt'
+                        },
+                        'm': {
+                            '$month': '$moment_dt'
+                        },
+                        'd': {
+                            '$dayOfMonth': '$moment_dt'
+                        },
+                        'h': {
+                            '$hour': '$moment_dt'
+                        }
+                    }
+                }, {
+                    '$sort': {
+                        'moment_dt': 1
+                    }
+                }, {
+                    '$group': {
+                        '_id': {
+                            'year': '$y',
+                            'month': '$m',
+                            'day': '$d',
+                            'hour': '$h'
+                        },
+                        'total': {
+                            '$avg': '$SM_Exgauster\\[0:4]'
+                        },
+                        'total2': {
+                            '$avg': '$SM_Exgauster\\[1:4]'
+                        }
+                    }
+                }
+                ]
+            )
+            date_from += timedelta(minutes=1)
