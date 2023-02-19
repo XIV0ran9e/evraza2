@@ -20,8 +20,12 @@ if __name__ == '__main__':
     mm.connect()
     my_partition = TopicPartition(topic, 0)
     consumer.assign([my_partition])
-    consumer.seek_to_beginning(my_partition)
+    # consumer.seek_to_beginning(my_partition)
+    consumer.seek(my_partition, mm.get_last_offset())
+    last_offset = None
     for message in consumer:
         parsed_data = json.loads(message.value.decode())
         dt = datetime.fromisoformat(parsed_data['moment'])
         mm.write_new_msg(parsed_data, dt)
+        last_offset = message.offset
+        mm.write_last_offset(last_offset)

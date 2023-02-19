@@ -8,6 +8,7 @@ class MongoManager:
     __instance: Optional[MongoClient] = None
     DB = 'evraza2'
     collection_by_day = 'records_{}_{}_{}'
+    metadatacol = 'metadatacol'
 
     client: MongoClient = None
 
@@ -21,9 +22,28 @@ class MongoManager:
     def disconnect(self):
         self.client.close()
 
+    def get_last_offset(self):
+        col = self.client[self.DB][self.metadatacol]
+        d = col.find_one({})
+        return d['offset']
+
+    def write_last_offset(self, offset):
+        col = self.client[self.DB][self.metadatacol]
+        d = col.find_one({})
+        if d is None:
+            col.insert_one({'offset': offset})
+        else:
+            col.update_one({'_id': d['_id']}, {'$set': {'offset': offset}})
+
     def write_new_msg(self, document, dt: datetime):
         col = self.client[self.DB][self.collection_by_day.format(dt.day, dt.month, dt.year)]
-        col.insert_one(document)
+        document['moment_dt'] = dt
+        if col.find_one({'moment': dt.isoformat()}):
+            col.update_one({'moment': dt.isoformat()},
+                           {'$set': document}
+                           )
+        else:
+            col.insert_one(document)
 
     def get_last_one(self):
         db = self.client[self.DB]
@@ -51,7 +71,10 @@ class MongoManager:
                 }
             ]
         )
-        r = aggregation.next()
-        r.pop('_id')
-        r['moment_dt'] = r['moment_dt'].isoformat()
-        return r
+        try:
+            r = aggregation.next()
+            r.pop('_id')
+            r['moment_dt'] = r['moment_dt'].isoformat()
+            return r
+        except StopIteration:
+            return {}
