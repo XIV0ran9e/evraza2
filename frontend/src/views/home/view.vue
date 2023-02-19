@@ -13,7 +13,7 @@ const setCurrent = (item) => {
 <template>
   <div class="home">
     <page-main v-if="!currentEks" @set="setCurrent" />
-    <page-scheme v-else>
+    <page-scheme v-else @close="setCurrent(null)">
       <section-scheme />
     </page-scheme>
     <!-- <page-graph>

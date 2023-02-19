@@ -1,5 +1,9 @@
 <script setup>
 import { AppHeader, AppFooter, AppNotifications } from "~/components/app";
+const emit = defineEmits(['close'])
+const close = () => {
+  emit('close')
+}
 </script>
 
 <template>
@@ -7,6 +11,7 @@ import { AppHeader, AppFooter, AppNotifications } from "~/components/app";
     <app-header class="header" />
     <app-notifications class="notifications" />
     <div class="content">
+      <button @click="close" class="back">Вернуться на главную</button>
       <slot></slot>
     </div>
     <app-footer class="footer" />
@@ -14,6 +19,12 @@ import { AppHeader, AppFooter, AppNotifications } from "~/components/app";
 </template>
 
 <style lang="scss" scoped>
+.back {
+  color: #000000;
+  background: #ffffff;
+  border-radius: 7px;
+  padding: 10px;
+}
 .main {
   min-height: 100vh;
   display: grid;
