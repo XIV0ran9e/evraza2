@@ -77,9 +77,9 @@ def parse_message(parsed_data: dict):
 
         def breakdown_forecast():
             def check_signal(part, enum, magic_number):
-                if parsed_data[signal_map['current_part']] == part and parsed_data[signal_map['enum']] == enum:
-                    border = parsed_data[signal_map['warning_max']]  # todo а правда, что эту?
-                    return (border - current_val) / magic_number
+                if signal_map['current_part'] == part and signal_map['parameter_enum'] == enum:
+                    border = parsed_data[signal_map['warning_max']]
+                    return (border - current_val) / magic_number / DAY_IN_DOTS
 
             forecast = [
                 check_signal('Подшипник 7', 'vibration_horizontal', MagicNumbers.VIBRATION_HORIZONTAL_SEVEN),
